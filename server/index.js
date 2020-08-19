@@ -3,7 +3,12 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('a user connected', socket.id);
+
+    socket.on('SEND_MESSAGE', function(data) {
+        console.log(data);
+        io.emit('MESSAGE', data)
+    });
 });
 
 http.listen(3000, () => {
