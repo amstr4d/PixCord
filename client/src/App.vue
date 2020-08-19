@@ -1,15 +1,14 @@
 <template>
-  <div id="app">
+  <div id="app" class="h-screen flex">
+    <Sidebar />
     <Chat />
   </div>
 </template>
 
-<style>
-
-</style>
 <script>
-import Chat from '@/components/Chat'
+import Chat from "@/components/Chat";
+import Sidebar from '@/components/Sidebar'
 export default {
-  components: { Chat }
-}
+  components: { Sidebar, Chat }
+};
 </script>
