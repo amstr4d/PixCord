@@ -1,9 +1,15 @@
 <template>
   <div id="app">
-    <router-view />
+    <Chat />
   </div>
 </template>
 
-<style lang="scss">
+<style>
 
 </style>
+<script>
+import Chat from '@/components/Chat'
+export default {
+  components: { Chat }
+}
+</script>
