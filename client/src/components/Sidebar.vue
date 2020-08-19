@@ -9,10 +9,8 @@
 
 <script>
 export default {
-name: "Sidebar"
-}
+  name: 'Sidebar',
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

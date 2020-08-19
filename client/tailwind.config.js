@@ -1,11 +1,11 @@
 module.exports = {
-  purge: ["./src/**/*.html", "./src/**/*.vue", "./src/**/*.jsx"],
+  purge: ['./src/**/*.html', './src/**/*.vue', './src/**/*.jsx'],
   theme: {
-    extend: {}
+    extend: {},
   },
   variants: {},
   plugins: [],
   future: {
-    removeDeprecatedGapUtilities: true
-  }
+    removeDeprecatedGapUtilities: true,
+  },
 };
