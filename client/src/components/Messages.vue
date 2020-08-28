@@ -4,7 +4,7 @@
       <div v-for="(message, index) in messages" :key="index">
         <div class="inline-block bg-blue-500 p-4 rounded-lg text-white" :class="messageClass(message)">
           <p>{{ message.content }}</p>
-          <time class="text-xs text-gray-200" :datetime="message.datetime">{{ message.datetime }}</time>
+          <time class="text-xs text-gray-200" :datetime="message.datetime">{{ message.datetime | relativeDatetime }}</time>
         </div>
 
       </div>
@@ -26,7 +26,7 @@
       <div>
         <button
           type="submit"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none"
         >
           Send
         </button>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 export default {
   name: 'Chat',
@@ -72,6 +74,18 @@ export default {
     MESSAGE(data) {
       this.messages = [...this.messages, data];
     },
+  },
+  filters: {
+    relativeDatetime: (date) => {
+      if (!date) {
+        return null;
+      }
+
+      return dayjs(date).fromNow(true);
+    },
+  },
+  created() {
+    dayjs.extend(relativeTime);
   },
 };
 </script>
