@@ -19,7 +19,7 @@ export default {
   methods: {
     handleUsernameSelection() {
       this.$store.commit('setUsername', this.username);
-      this.$router.push('Chat');
+      this.$router.push({ name: 'Chat' });
     },
   },
 };
