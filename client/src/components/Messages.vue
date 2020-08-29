@@ -49,8 +49,8 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (!this.$store.state.user) {
-        this.$router.push({ name: 'Home' });
+      if (!this.$store.state.auth.user) {
+        this.$router.push({ name: 'Login' });
       }
       if (this.inputMessage !== '') {
         this.$socket.emit('SEND_MESSAGE', {
@@ -58,7 +58,7 @@ export default {
           datetime: new Date(),
           user: {
             id: 1,
-            name: this.$store.state.user,
+            name: this.$store.state.auth.user.username,
           },
         });
         this.inputMessage = '';
@@ -66,7 +66,7 @@ export default {
     },
     messageClass(message) {
       return {
-        'own-msg': message.user.name === this.$store.state.user,
+        'own-msg': message.user.name === this.$store.state.auth.user.username,
       };
     },
   },

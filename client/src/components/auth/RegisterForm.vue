@@ -10,23 +10,37 @@
           <router-link :to="{name: 'Login'}" class="text-gray-700 text-sm font-semibold">Login</router-link>
         </div>
       </div>
-      <form @submit.prevent="handleRegister" autocomplete="off">
-        <div class="form-control">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" placeholder="Username" v-model="user.username">
-        </div>
-        <div class="form-control">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" placeholder="Email" v-model="user.email">
-        </div>
-        <div class="form-control">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="Password" v-model="user.password">
-        </div>
-        <div class="flex">
-          <button type="submit" class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none transition-all duration-300 ease-in-out" :disabled="loading">Register</button>
-        </div>
-      </form>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form @submit.prevent="handleSubmit(handleRegister)" autocomplete="off">
+          <validation-provider v-slot="{ errors }" rules="required">
+            <div class="form-control">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username" placeholder="Username" v-model="user.username">
+              <p class="ml-4 text-red-500 text-xs italic">{{ errors[0] }}</p>
+            </div>
+          </validation-provider>
+          <validation-provider v-slot="{ errors }" rules="required|email">
+            <div class="form-control">
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" placeholder="Email" v-model="user.email">
+              <p class="ml-4 text-red-500 text-xs italic">{{ errors[0] }}</p>
+            </div>
+          </validation-provider>
+          <validation-provider v-slot="{ errors }" rules="required">
+            <div class="form-control">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" placeholder="Password" v-model="user.password">
+              <p class="ml-4 text-red-500 text-xs italic">{{ errors[0] }}</p>
+            </div>
+          </validation-provider>
+          <div class="flex">
+            <button type="submit"
+                    class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none transition-all duration-300 ease-in-out"
+                    :disabled="loading">Register
+            </button>
+          </div>
+        </form>
+      </validation-observer>
     </div>
 
   </div>
@@ -34,10 +48,15 @@
 </template>
 
 <script>
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import User from '@/models/User';
 
 export default {
   name: 'RegisterForm',
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   data() {
     return {
       user: new User('', '', ''),

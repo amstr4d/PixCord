@@ -10,21 +10,28 @@
           <router-link :to="{name: 'Register'}" class="text-gray-700 text-sm font-semibold">Sign up</router-link>
         </div>
       </div>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form @submit.prevent="handleSubmit(handleLogin)" autocomplete="off">
+          <validation-provider v-slot="{ errors }" rules="required|email">
+            <div class="form-control">
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" v-model="user.email" placeholder="Email">
+              <p class="ml-4 text-red-500 text-xs italic">{{ errors[0] }}</p>
+            </div>
+          </validation-provider>
+          <validation-provider v-slot="{ errors }" rules="required">
+            <div class="form-control">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" v-model="user.password" placeholder="Password">
+              <p class="ml-4 text-red-500 text-xs italic">{{ errors[0] }}</p>
+            </div>
+          </validation-provider>
+          <div class="flex">
+            <button type="submit" class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none transition-all duration-300 ease-in-out" :disabled="loading">Login</button>
+          </div>
 
-      <form @submit.prevent="handleLogin" autocomplete="off" >
-        <div class="form-control">
-          <label for="email">Email</label>
-          <input type="email" name="email" id="email" v-model="user.email" placeholder="Email">
-        </div>
-        <div class="form-control">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" v-model="user.password" placeholder="Password">
-        </div>
-        <div class="flex">
-          <button type="submit" class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none transition-all duration-300 ease-in-out" :disabled="loading">Login</button>
-        </div>
-
-      </form>
+        </form>
+      </validation-observer>
     </div>
 
   </div>
@@ -32,10 +39,15 @@
 </template>
 
 <script>
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import User from '@/models/User';
 
 export default {
   name: 'LoginForm',
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   data() {
     return {
       user: new User('', ''),
@@ -71,7 +83,7 @@ export default {
   }
 
   .form-control > input {
-    @apply w-full border rounded-full appearance-none px-4 py-2 transition-all duration-300 ease-in-out;
+    @apply w-full border rounded-full appearance-none mb-1 px-4 py-2 transition-all duration-300 ease-in-out;
   }
 
   .form-control > input:focus {

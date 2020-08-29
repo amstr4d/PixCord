@@ -6,6 +6,8 @@ import store from './store';
 
 import './assets/css/main.css';
 
+import './validators/validators';
+
 Vue.use(new VueSocketIO({
   debug: true,
   connection: 'localhost:3000',
