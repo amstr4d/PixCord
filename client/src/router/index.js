@@ -5,6 +5,8 @@ import store from '../store';
 
 import Home from '../views/Home.vue';
 import Chat from '../views/Chat.vue';
+import Register from '../views/auth/Register.vue';
+import Login from '../views/auth/Login.vue';
 
 Vue.use(VueRouter);
 
@@ -14,7 +16,16 @@ const routes = [
     name: 'Home',
     component: Home,
   },
-
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+  },
   {
     path: '/chat',
     name: 'Chat',
@@ -31,9 +42,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.state.user) {
+    const loggedIn = localStorage.getItem('user');
+    if (!loggedIn) {
       next({
-        path: '/',
+        path: '/login',
       });
     } else {
       next();
