@@ -16,7 +16,7 @@ export default {
   components: { Messages, Sidebar },
   computed: {
     displayMessages() {
-      return this.$store.state.chat.current !== null;
+      return this.$store.state.chat.currentRoom !== null;
     },
   },
   created () {

@@ -60,7 +60,7 @@ router.post('/login', async(req, res) => {
     });
 });
 
-router.get('/all', async (req, res) => {
+router.get('/all', auth, async (req, res) => {
     let users = await User.find({}).select("-password");
     res.status(200).send(users);
 })
