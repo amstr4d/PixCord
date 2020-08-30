@@ -21,13 +21,18 @@ mongoose
 io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
 
+    socket.on('SUBSCRIBE', function(room) {
+        console.log('joining room', room);
+        socket.join(room);
+    })
+
     socket.on('disconnect', (reason) => {
         console.log('a user disconnected', socket.id, reason);
     });
 
     socket.on('SEND_MESSAGE', function(data) {
-        console.log(data);
-        io.emit('MESSAGE', data)
+        console.log('Message to', data.to + '#' + data.from);
+        io.to(data.from + '#' + data.to).emit('MESSAGE', data)
     });
 });
 

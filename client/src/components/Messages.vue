@@ -1,7 +1,7 @@
 <template>
   <div class="w-2/3 sm:w-3/4 flex flex-col p-4">
     <div class="flex flex-col space-y-2 flex-1">
-      <div v-for="(message, index) in messages" :key="index">
+      <div v-for="(message, index) in filterMessages" :key="index">
         <div class="inline-block bg-blue-500 p-4 rounded-lg text-white" :class="messageClass(message)">
           <p>{{ message.content }}</p>
           <time class="text-xs text-gray-200" :datetime="message.datetime">{{ message.datetime | relativeDatetime }}</time>
@@ -43,7 +43,7 @@ export default {
   name: 'Chat',
   data() {
     return {
-      messages: [{ content: 'test', datetime: '2020-08-28T20:45:19.541Z', user: { id: 2, name: 'Test' } }],
+      messages: [],
       inputMessage: '',
     };
   },
@@ -53,26 +53,28 @@ export default {
         this.$router.push({ name: 'Login' });
       }
       if (this.inputMessage !== '') {
-        this.$socket.emit('SEND_MESSAGE', {
+
+        const newMessage = {
           content: this.inputMessage,
           datetime: new Date(),
-          user: {
-            id: 1,
-            name: this.$store.state.auth.user.username,
-          },
-        });
+          from: this.$store.state.auth.user._id,
+          to: this.$store.state.chat.current,
+        };
+
+        this.$store.commit('chat/SOCKET_MESSAGE', newMessage);
+        this.$socket.client.emit('SEND_MESSAGE', newMessage);
         this.inputMessage = '';
       }
     },
     messageClass(message) {
       return {
-        'own-msg': message.user.name === this.$store.state.auth.user.username,
+        'own-msg': message.from === this.$store.state.auth.user._id,
       };
     },
   },
-  sockets: {
-    MESSAGE(data) {
-      this.messages = [...this.messages, data];
+  computed: {
+    filterMessages() {
+      return this.$store.state.chat.messages.filter((element) => ((element.from === this.$store.state.auth.user._id) && (element.to === this.$store.state.chat.current)) || (element.to === this.$store.state.auth.user._id && element.from === this.$store.state.chat.current));
     },
   },
   filters: {

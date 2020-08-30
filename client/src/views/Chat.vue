@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex">
     <Sidebar></Sidebar>
-    <Messages></Messages>
+    <Messages v-if="displayMessages"></Messages>
   </div>
 </template>
 
@@ -14,5 +14,13 @@ import Messages from '@/components/Messages';
 export default {
   name: 'Chat',
   components: { Messages, Sidebar },
+  computed: {
+    displayMessages() {
+      return this.$store.state.chat.current !== null;
+    },
+  },
+  created () {
+    this.$socket.client.open();
+  }
 };
 </script>

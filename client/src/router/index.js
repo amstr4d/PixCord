@@ -42,7 +42,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const loggedIn = localStorage.getItem('user');
+    const loggedIn = sessionStorage.getItem('user');
     if (!loggedIn) {
       next({
         path: '/login',

@@ -9,13 +9,13 @@ class AuthService {
     }).then((res) => (res.json()))
       .then((response) => {
         if (response.token) {
-          localStorage.setItem('user', JSON.stringify(response));
+          sessionStorage.setItem('user', JSON.stringify(response));
         }
       });
   }
 
   static logout() {
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
   }
 
   static register(user) {
@@ -28,7 +28,7 @@ class AuthService {
     }).then((res) => res.json())
       .then((response) => {
         if (response.token) {
-          localStorage.setItem('user', JSON.stringify(response));
+          sessionStorage.setItem('user', JSON.stringify(response));
         }
         return response;
       });

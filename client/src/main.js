@@ -1,5 +1,8 @@
 import Vue from 'vue';
-import VueSocketIO from 'vue-socket.io';
+
+import VueSocketIOExt from 'vue-socket.io-extended';
+import io from 'socket.io-client';
+
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -8,10 +11,11 @@ import './assets/css/main.css';
 
 import './validators/validators';
 
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: 'localhost:3000',
-}));
+const socket = io('http://localhost:3000', {
+  autoConnect: false,
+});
+
+Vue.use(VueSocketIOExt, socket, { store });
 
 Vue.config.productionTip = false;
 
